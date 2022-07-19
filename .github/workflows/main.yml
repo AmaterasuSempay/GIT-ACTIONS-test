@@ -7,7 +7,7 @@ env:
 on: 
   push:
     branches:
-      - master
+      - main
 
 jobs:
   test-ci-part:
@@ -26,6 +26,7 @@ jobs:
         aws-access-key-id    : ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region           : ${{ env.AWS_REGION_NAME }}
+    
     - name: Copy Dep package to S3 bucket
       run : aws s3 cp ${{ env.DEPLOY_PACKAGE_NAME }} s3://${{ env.S3_BUCKET_NAME }}/
     
