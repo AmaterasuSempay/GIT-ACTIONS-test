@@ -1,0 +1,33 @@
+name: build-html-action
+env:
+  S3_BUCKET_NAME     : "git-action-codedeploy-deployments"
+  DEPLOY_PACKAGE_NAME: "html_page_${{ github.sha }}.zip"
+  AWS_REGION_NAME    : "eu-central-1"
+
+on: 
+  push:
+    branches:
+      - master
+
+jobs:
+  test-ci-part:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: GIT clone repo
+      uses: actions/checkout@v1
+    
+    - name: Create ZIP package
+      run : zip -r ${{ env.DEPLOY_PACKAGE_NAME }}
+    
+    - name: Config AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id    : ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region           : ${{ env.AWS_REGION_NAME }}
+    - name: Copy Dep package to S3 bucket
+      run : aws s3 cp ${{ env.DEPLOY_PACKAGE_NAME }} s3://${{ env.S3_BUCKET_NAME }}/
+    
+    - name: Print OK message
+      run : echo "All done"
