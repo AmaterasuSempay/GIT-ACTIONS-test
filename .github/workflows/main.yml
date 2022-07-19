@@ -45,4 +45,3 @@ jobs:
           --deployment-group-name ${{ env. DEV_GROUP_NAME}} \
           --file-exists-behavior OVERWRITE \
           --s3-location bucket=${{ env.S3_BUCKET_NAME }},key=${{ env.DEPLOY_PACKAGE_NAME }},bundleType=html\
-          --region ${{ env.AWS_REGION_NAME }}\
