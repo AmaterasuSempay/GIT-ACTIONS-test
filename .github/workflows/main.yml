@@ -37,6 +37,9 @@ jobs:
     needs  : [test-ci-part]
     
     steps:
+    - name: Copying appspec.yml
+      run: cp appspec.yml ./bin/app
+        
     - name: Creating AWS Deployment
       run : |
           aws deploy create-deployment \
