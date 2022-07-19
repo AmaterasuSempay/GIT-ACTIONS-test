@@ -1,7 +1,7 @@
 name: build-html-action
 env:
   S3_BUCKET_NAME     : "git-action-codedeploy-deployments"
-  DEPLOY_PACKAGE_NAME: "html_page_${{ github.sha }}.zip"
+  DEPLOY_PACKAGE_NAME: "index.html"
   AWS_REGION_NAME    : "eu-central-1"
 
 on: 
