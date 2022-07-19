@@ -37,8 +37,8 @@ jobs:
     needs  : [test-ci-part]
     
     steps:
-    -name: Creating AWS Deployment
-     run : |
+    - name: Creating AWS Deployment
+      run : |
           aws deploy create-deployment \
           --application-name ${{ env. CODE_DEPLOY_NAME}} \
           --deployment-config-name CodeDeployDefault.AllAtOnce \
