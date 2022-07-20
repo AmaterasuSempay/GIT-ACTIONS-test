@@ -33,9 +33,6 @@ jobs:
     - name: Copy Dep package to S3 bucket
       run : aws s3 cp ${{ env.DEPLOY_PACKAGE_NAME }} s3://${{ env.S3_BUCKET_NAME }}/
       
-    - name: Print OK message
-      run : echo "All done"
-      
   test-cd-part:
     runs-on: ubuntu-latest
     needs  : [test-ci-part]
@@ -43,12 +40,6 @@ jobs:
     steps:   
     - name: GIT clone repo CD
       uses: actions/checkout@v1
-      
-    - name: Copying appspec.yml
-      run : cp appspec.yml ./bin/app
-    
-    - name: Copying scripts
-      run : cp -R ./Scripts ./bin/app/scripts
     
     - name: Install AWS CLI 2
       run : |
@@ -62,15 +53,15 @@ jobs:
         aws-access-key-id    : ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region           : ${{ env.AWS_REGION_NAME }}
-          
-    - name: AWS Deploy push
+        
+    - name: aws deploy push
       run : |
           aws deploy push \
           --application-name ${{ env.CODE_DEPLOY_NAME }} \
-          --description "Revision of the ${{ env.CODE_DEPLOY_NAME }}" \
+          --description "This is a revision for the test" \
           --ignore-hidden-files \
           --s3-location s3://${{ env.S3_BUCKET_NAME }}/${{ env.DEPLOY_PACKAGE_NAME }}.zip \
-          --source ./bin/app
+          --source .
     
     - name: Creating AWS Deployment
       run : |
