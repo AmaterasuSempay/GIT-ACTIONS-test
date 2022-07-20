@@ -56,6 +56,6 @@ jobs:
         codedeploy_name: ${{ env.CODE_DEPLOY_NAME }}
         codedeploy_group: ${{ env.DEV_GROUP_NAME }}
         s3_bucket: ${{ env.S3_BUCKET_NAME }}
-        s3_folder: ${{ env.S3_BUCKET_NAME }}
+        s3_folder: ./
         
         
