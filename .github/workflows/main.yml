@@ -4,6 +4,7 @@ env:
   CODE_DEPLOY_NAME   : "git-actions"
   DEV_GROUP_NAME     : "develop"
   DEPLOY_PACKAGE_NAME: "index.html"
+  APPSPEC_NAME       : "appspec.yml"
   AWS_REGION_NAME    : "eu-central-1"
 
 on: 
@@ -28,6 +29,9 @@ jobs:
     
     - name: Copy Dep package to S3 bucket
       run : aws s3 cp ${{ env.DEPLOY_PACKAGE_NAME }} s3://${{ env.S3_BUCKET_NAME }}/
+      
+    - name: Copy appspec file to S3 bucket
+      run : aws s3 cp ${{ env.APPSPEC_NAME }} s3://${{ env.S3_BUCKET_NAME }}/
     
     - name: Print OK message
       run : echo "All done"
