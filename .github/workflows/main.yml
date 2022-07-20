@@ -47,14 +47,12 @@ jobs:
     - name: ls
       run : ls -la
       
-    - name: AWS CodeDeploy
-      uses: sourcetoad/aws-codedeploy-action@v1
-      with:
-        aws_access_key: ${{ secrets.AWS_ACCESS_KEY }}
-        aws_secret_key: ${{ secrets.AWS_SECRET_KEY }}
-        aws_region: ${{ env.AWS_REGION_NAME }}
-        codedeploy_name: ${{ env.CODE_DEPLOY_NAME }}
-        codedeploy_group: ${{ env.DEV_GROUP_NAME }}
-        s3_bucket: ${{ env.S3_BUCKET_NAME }}
-        
-        
+    
+    - name: Creating AWS Deployment
+      run: |
+          aws deploy create-deployment \
+          --application-name ${{ env.CODE_DEPLOY_NAME }} \
+          --deployment-config-name CodeDeployDefault.AllAtOnce \
+          --deployment-group-name ${{ env.DEV_GROUP_NAME }} \
+          --file-exists-behavior OVERWRITE \
+          --s3-location bucket=${{ env.S3_BUCKET_NAME }},key=${{ env.DEPLOY_PACKAGE_NAME }},bundleType=html \
