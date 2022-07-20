@@ -30,9 +30,6 @@ jobs:
     - name: Copy Dep package to S3 bucket
       run : aws s3 cp ${{ env.DEPLOY_PACKAGE_NAME }} s3://${{ env.S3_BUCKET_NAME }}/
       
-    - name: Copy appspec file to S3 bucket
-      run : aws s3 cp ${{ env.APPSPEC_NAME }} s3://${{ env.S3_BUCKET_NAME }}/
-    
     - name: Print OK message
       run : echo "All done"
       
@@ -41,6 +38,9 @@ jobs:
     needs  : [test-ci-part]
     
     steps:
+    - name: Test appspec
+      run : cp appspec.yml ./
+    
     - name: AWS CodeDeploy
       uses: sourcetoad/aws-codedeploy-action@v1
       with:
