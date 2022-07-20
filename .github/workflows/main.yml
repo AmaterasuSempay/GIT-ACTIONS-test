@@ -1,4 +1,4 @@
-name: build-html-action
+name: build-html-action-s3-code-deploy
 env:
   S3_BUCKET_NAME     : "git-action-codedeploy-deployments"
   CODE_DEPLOY_NAME   : "git-actions"
