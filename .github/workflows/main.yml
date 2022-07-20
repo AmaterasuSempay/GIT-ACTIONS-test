@@ -43,8 +43,10 @@ jobs:
     
     - name: pwd
       run : pwd
-    - name: ls -l
     
+    - name: ls
+      run : ls -la
+      
     - name: AWS CodeDeploy
       uses: sourcetoad/aws-codedeploy-action@v1
       with:
