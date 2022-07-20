@@ -3,7 +3,7 @@ env:
   S3_BUCKET_NAME     : "git-action-codedeploy-deployments"
   CODE_DEPLOY_NAME   : "git-actions"
   DEV_GROUP_NAME     : "develop"
-  DEPLOY_PACKAGE_NAME: "index.html"
+  DEPLOY_PACKAGE_NAME: "index.html_${{ github.sha }}.zip"
   APPSPEC_NAME       : "appspec.yml"
   AWS_REGION_NAME    : "eu-central-1"
 
@@ -19,6 +19,9 @@ jobs:
     steps:
     - name: GIT clone repo
       uses: actions/checkout@v1
+    
+    - name: ZIP
+      run : zip -r ${{ env.DEPLOY_PACKAGE_NAME }} ./ -x *.git*
     
     - name: Config AWS Credentials
       uses: aws-actions/configure-aws-credentials@v1
@@ -55,4 +58,4 @@ jobs:
           --deployment-config-name CodeDeployDefault.AllAtOnce \
           --deployment-group-name ${{ env.DEV_GROUP_NAME }} \
           --file-exists-behavior OVERWRITE \
-          --s3-location bucket=${{ env.S3_BUCKET_NAME }},key=${{ env.DEPLOY_PACKAGE_NAME }},bundleType=html \
+          --s3-location bucket=${{ env.S3_BUCKET_NAME }},key=${{ env.DEPLOY_PACKAGE_NAME }}.zip,bundleType=zip \
