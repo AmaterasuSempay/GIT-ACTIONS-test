@@ -38,6 +38,9 @@ jobs:
     needs  : [test-ci-part]
     
     steps:   
+    - name: GIT clone repo
+      uses: actions/checkout@v1
+    
     - name: AWS CodeDeploy
       uses: sourcetoad/aws-codedeploy-action@v1
       with:
@@ -48,5 +51,5 @@ jobs:
         codedeploy_group: ${{ env.DEV_GROUP_NAME }}
         s3_bucket: ${{ env.S3_BUCKET_NAME }}
         s3_folder: ${{ env.S3_BUCKET_NAME }}
-        directory: ./
+        
         
