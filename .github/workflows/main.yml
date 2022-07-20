@@ -44,15 +44,36 @@ jobs:
     - name: GIT clone repo CD
       uses: actions/checkout@v1
       
+    - name: Copying appspec.yml
+      run : cp appspec.yml ./bin/app
+    
+    - name: Copying scripts
+      run : cp -R ./Scripts ./bin/app/scripts
+    
+    - name: Install AWS CLI 2
+      run : |
+          curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+          unzip awscliv2.zip
+          sudo ./aws/install
+          
     - name: Config CD AWS Credentials
       uses: aws-actions/configure-aws-credentials@v1
       with:
         aws-access-key-id    : ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region           : ${{ env.AWS_REGION_NAME }}
+          
+    - name: AWS Deploy push
+      run : |
+          aws deploy push \
+          --application-name ${{ env.CODE_DEPLOY_NAME }} \
+          --description "Revision of the ${{ env.CODE_DEPLOY_NAME }}" \
+          --ignore-hidden-files \
+          --s3-location s3://${{ env.S3_BUCKET_NAME }}/${{ env.DEPLOY_PACKAGE_NAME }}.zip \
+          --source ./bin/app
     
     - name: Creating AWS Deployment
-      run: |
+      run : |
           aws deploy create-deployment \
           --application-name ${{ env.CODE_DEPLOY_NAME }} \
           --deployment-config-name CodeDeployDefault.AllAtOnce \
